@@ -17,6 +17,7 @@ import EasterEgg from "./components/EasterEgg";
 import Pools from "./views/Pools";
 import history from "./routerHistory";
 import NavBar from "newComponents/navBar";
+import { Box, Container } from "@chakra-ui/react";
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -48,8 +49,9 @@ const App: React.FC = () => {
     <Router history={history}>
       <ResetCSS />
       <GlobalStyle />
-      <NavBar />
-      {/* <Menu>
+      <Container maxW="container.xl">
+        <NavBar />
+        {/* <Menu>
         <SuspenseWithChunkError fallback={<PageLoader />}>
           <Switch>
             <Route path="/" exact>
@@ -99,8 +101,9 @@ const App: React.FC = () => {
           </Switch>
         </SuspenseWithChunkError>
       </Menu> */}
-      <EasterEgg iterations={2} />
-      <ToastListener />
+        <EasterEgg iterations={2} />
+        <ToastListener />
+      </Container>
     </Router>
   );
 };

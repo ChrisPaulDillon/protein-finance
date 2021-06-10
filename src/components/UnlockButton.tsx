@@ -18,7 +18,7 @@ const UnlockButton = (props) => {
       {account ? (
         <Text>{getAbbreviatedAddress(account)}</Text>
       ) : (
-        t("Unlock Wallet")
+        <Text> {t("Unlock Wallet")}</Text>
       )}
     </Button>
   );

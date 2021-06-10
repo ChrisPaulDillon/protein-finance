@@ -20,8 +20,12 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import UnlockButton from "../components/UnlockButton";
 import { useWeb3React } from "@web3-react/core";
+import useAuth from "../hooks/useAuth";
+import { DarkModeButton } from "newComponents/DarkModeButton";
+import { usePriceCakeBusd } from "state/hooks";
+import PriceImageToken from "./PriceImageToken";
 
-const Links = ["Dashboard", "Projects", "Team"];
+const Links = ["Docs", "Farm"];
 
 const NavLink = ({ children }: { children: ReactNode }) => (
   <Link
@@ -43,6 +47,8 @@ const NavLink = ({ children }: { children: ReactNode }) => (
 const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { account } = useWeb3React();
+  const { logout } = useAuth();
+
   return (
     <>
       <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
@@ -55,7 +61,7 @@ const NavBar = () => {
             onClick={isOpen ? onClose : onOpen}
           />
           <HStack spacing={8} alignItems={"center"} w="100%" ml={2}>
-            <Box>Logo</Box>
+            <PriceImageToken />
             <HStack
               as={"nav"}
               spacing={4}
@@ -70,7 +76,7 @@ const NavBar = () => {
               ))}
             </HStack>
           </HStack>
-          <Flex alignItems={"center"}>
+          <Flex alignItems={"center"} justifyContent="space-between">
             {account && (
               <Menu>
                 <MenuButton
@@ -82,14 +88,14 @@ const NavBar = () => {
                   <UnlockButton />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem>Link 1</MenuItem>
-                  <MenuItem>Link 2</MenuItem>
-                  <MenuDivider />
-                  <MenuItem>Link 3</MenuItem>
+                  <MenuItem onClick={logout}>Logout</MenuItem>
                 </MenuList>
               </Menu>
             )}
             {!account && <UnlockButton />}
+            <Box ml={2}>
+              <DarkModeButton />
+            </Box>
           </Flex>
         </Flex>
 
@@ -103,8 +109,6 @@ const NavBar = () => {
           </Box>
         ) : null}
       </Box>
-
-      <Box p={4}>Main Content Here</Box>
     </>
   );
 };
