@@ -3,7 +3,6 @@ import { useWalletModal } from "@pancakeswap/uikit";
 import { Button, Text } from "@chakra-ui/react";
 import useAuth from "hooks/useAuth";
 import { useTranslation } from "contexts/Localization";
-import { useProfile } from "../state/hooks";
 import { useWeb3React } from "@web3-react/core";
 import { getAbbreviatedAddress } from "../utils/addressHelpers";
 
