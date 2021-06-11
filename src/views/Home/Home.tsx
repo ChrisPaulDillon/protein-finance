@@ -1,19 +1,20 @@
-import React from 'react'
-import styled from 'styled-components'
-import { Heading, Text, BaseLayout } from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
-import Page from 'components/layout/Page'
-import FarmStakingCard from 'views/Home/components/FarmStakingCard'
-import LotteryCard from 'views/Home/components/LotteryCard'
-import CakeStats from 'views/Home/components/CakeStats'
-import TotalValueLockedCard from 'views/Home/components/TotalValueLockedCard'
-import EarnAPRCard from 'views/Home/components/EarnAPRCard'
-import EarnAssetCard from 'views/Home/components/EarnAssetCard'
-import WinCard from 'views/Home/components/WinCard'
+import React from "react";
+import styled from "styled-components";
+import { BaseLayout } from "@pancakeswap/uikit";
+import { useTranslation } from "contexts/Localization";
+import Page from "components/layout/Page";
+import FarmStakingCard from "views/Home/components/FarmStakingCard";
+import LotteryCard from "views/Home/components/LotteryCard";
+import CakeStats from "views/Home/components/CakeStats";
+import TotalValueLockedCard from "views/Home/components/TotalValueLockedCard";
+import EarnAPRCard from "views/Home/components/EarnAPRCard";
+import EarnAssetCard from "views/Home/components/EarnAssetCard";
+import WinCard from "views/Home/components/WinCard";
+import { Heading, Text } from "@chakra-ui/react";
 
 const Hero = styled.div`
   align-items: center;
-  background-image: url('/images/pan-bg-mobile.svg');
+  background-image: url("/images/pan-bg-mobile.svg");
   background-repeat: no-repeat;
   background-position: top center;
   display: flex;
@@ -25,12 +26,12 @@ const Hero = styled.div`
   text-align: center;
 
   ${({ theme }) => theme.mediaQueries.lg} {
-    background-image: url('/images/pan-bg2.svg'), url('/images/pan-bg.svg');
+    background-image: url("/images/pan-bg2.svg"), url("/images/pan-bg.svg");
     background-position: left center, right center;
     height: 165px;
     padding-top: 0;
   }
-`
+`;
 
 const Cards = styled(BaseLayout)`
   align-items: stretch;
@@ -57,7 +58,7 @@ const Cards = styled(BaseLayout)`
       grid-column: span 6;
     }
   }
-`
+`;
 
 const CTACards = styled(BaseLayout)`
   align-items: start;
@@ -82,18 +83,18 @@ const CTACards = styled(BaseLayout)`
       grid-column: span 4;
     }
   }
-`
+`;
 
 const Home: React.FC = () => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
   return (
     <Page>
       <Hero>
         <Heading as="h1" scale="xl" mb="24px" color="secondary">
-          {t('PancakeSwap')}
+          {t("Protein Finance")}
         </Heading>
-        <Text>{t('The #1 AMM and yield farm on Binance Smart Chain.')}</Text>
+        <Text>{t("Auto Compound Set & Forget")}</Text>
       </Hero>
       <div>
         <Cards>
@@ -111,7 +112,7 @@ const Home: React.FC = () => {
         </Cards>
       </div>
     </Page>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

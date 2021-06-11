@@ -51,7 +51,13 @@ const NavBar = () => {
 
   return (
     <>
-      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+      <Box
+        bgGradient={useColorModeValue(
+          "gray.900",
+          "linear(to bottom, #292929, #282828, #272727, #262626, #252525)"
+        )}
+        px={4}
+      >
         <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
           <IconButton
             size={"md"}

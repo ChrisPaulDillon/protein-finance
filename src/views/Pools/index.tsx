@@ -1,33 +1,60 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import styled from 'styled-components'
-import BigNumber from 'bignumber.js'
-import { useWeb3React } from '@web3-react/core'
-import { Heading, Flex, Image, Text } from '@pancakeswap/uikit'
-import orderBy from 'lodash/orderBy'
-import partition from 'lodash/partition'
-import { useTranslation } from 'contexts/Localization'
-import usePersistState from 'hooks/usePersistState'
-import { usePools, useFetchCakeVault, useFetchPublicPoolsData, usePollFarmsData, useCakeVault } from 'state/hooks'
-import { latinise } from 'utils/latinise'
-import FlexLayout from 'components/layout/Flex'
-import Page from 'components/layout/Page'
-import PageHeader from 'components/PageHeader'
-import SearchInput from 'components/SearchInput'
-import Select, { OptionProps } from 'components/Select/Select'
-import { Pool } from 'state/types'
-import PoolCard from './components/PoolCard'
-import CakeVaultCard from './components/CakeVaultCard'
-import PoolTabButtons from './components/PoolTabButtons'
-import BountyCard from './components/BountyCard'
-import HelpButton from './components/HelpButton'
-import PoolsTable from './components/PoolsTable/PoolsTable'
-import { ViewMode } from './components/ToggleView/ToggleView'
-import { getAprData, getCakeVaultEarnings } from './helpers'
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
+import styled from "styled-components";
+import BigNumber from "bignumber.js";
+import { useWeb3React } from "@web3-react/core";
+import { Heading, Flex, Image, Text } from "@pancakeswap/uikit";
+import orderBy from "lodash/orderBy";
+import partition from "lodash/partition";
+import { useTranslation } from "contexts/Localization";
+import usePersistState from "hooks/usePersistState";
+import {
+  usePools,
+  useFetchCakeVault,
+  useFetchPublicPoolsData,
+  usePollFarmsData,
+  useCakeVault,
+} from "state/hooks";
+import { latinise } from "utils/latinise";
+import FlexLayout from "components/layout/Flex";
+import Page from "components/layout/Page";
+import PageHeader from "components/PageHeader";
+import SearchInput from "components/SearchInput";
+import Select, { OptionProps } from "components/Select/Select";
+import { Pool } from "state/types";
+import PoolCard from "./components/PoolCard";
+import CakeVaultCard from "./components/CakeVaultCard";
+import PoolTabButtons from "./components/PoolTabButtons";
+import BountyCard from "./components/BountyCard";
+import HelpButton from "./components/HelpButton";
+import PoolsTable from "./components/PoolsTable/PoolsTable";
+import { ViewMode } from "./components/ToggleView/ToggleView";
+import { getAprData, getCakeVaultEarnings } from "./helpers";
+
+const Hero = styled.div`
+  align-items: center;
+  background-image: url("/images/pan-bg-mobile.svg");
+  background-repeat: no-repeat;
+  background-position: top center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  margin-bottom: 32px;
+  padding-top: 116px;
+  text-align: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    background-image: url("/images/pan-bg2.svg"), url("/images/pan-bg.svg");
+    background-position: left center, right center;
+    height: 165px;
+    padding-top: 0;
+  }
+`;
 
 const CardLayout = styled(FlexLayout)`
   justify-content: center;
-`
+`;
 
 const PoolControls = styled(Flex)`
   flex-direction: column;
@@ -35,119 +62,140 @@ const PoolControls = styled(Flex)`
   ${({ theme }) => theme.mediaQueries.md} {
     flex-direction: row;
   }
-`
+`;
 
 const SearchSortContainer = styled(Flex)`
   gap: 10px;
   justify-content: space-between;
-`
+`;
 
 const ControlStretch = styled(Flex)`
   > div {
     flex: 1;
   }
-`
+`;
 
-const NUMBER_OF_POOLS_VISIBLE = 12
+const NUMBER_OF_POOLS_VISIBLE = 12;
 
 const Pools: React.FC = () => {
-  const location = useLocation()
-  const { t } = useTranslation()
-  const { account } = useWeb3React()
-  const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools(account)
-  const [stakedOnly, setStakedOnly] = usePersistState(false, { localStorageKey: 'pancake_pool_staked' })
-  const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(NUMBER_OF_POOLS_VISIBLE)
-  const [observerIsSet, setObserverIsSet] = useState(false)
-  const loadMoreRef = useRef<HTMLDivElement>(null)
-  const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, { localStorageKey: 'pancake_farm_view' })
-  const [searchQuery, setSearchQuery] = useState('')
-  const [sortOption, setSortOption] = useState('hot')
+  const location = useLocation();
+  const { t } = useTranslation();
+  const { account } = useWeb3React();
+  const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools(account);
+  const [stakedOnly, setStakedOnly] = usePersistState(false, {
+    localStorageKey: "pancake_pool_staked",
+  });
+  const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(
+    NUMBER_OF_POOLS_VISIBLE
+  );
+  const [observerIsSet, setObserverIsSet] = useState(false);
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, {
+    localStorageKey: "pancake_farm_view",
+  });
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState("hot");
   const {
     userData: { cakeAtLastUserAction, userShares },
     fees: { performanceFee },
     pricePerFullShare,
     totalCakeInVault,
-  } = useCakeVault()
-  const accountHasVaultShares = userShares && userShares.gt(0)
-  const performanceFeeAsDecimal = performanceFee && performanceFee / 100
+  } = useCakeVault();
+  const accountHasVaultShares = userShares && userShares.gt(0);
+  const performanceFeeAsDecimal = performanceFee && performanceFee / 100;
 
   const pools = useMemo(() => {
-    const cakePool = poolsWithoutAutoVault.find((pool) => pool.sousId === 0)
-    const cakeAutoVault = { ...cakePool, isAutoVault: true }
-    return [cakeAutoVault, ...poolsWithoutAutoVault]
-  }, [poolsWithoutAutoVault])
+    const cakePool = poolsWithoutAutoVault.find((pool) => pool.sousId === 0);
+    const cakeAutoVault = { ...cakePool, isAutoVault: true };
+    return [cakeAutoVault, ...poolsWithoutAutoVault];
+  }, [poolsWithoutAutoVault]);
 
   // TODO aren't arrays in dep array checked just by reference, i.e. it will rerender every time reference changes?
-  const [finishedPools, openPools] = useMemo(() => partition(pools, (pool) => pool.isFinished), [pools])
+  const [finishedPools, openPools] = useMemo(
+    () => partition(pools, (pool) => pool.isFinished),
+    [pools]
+  );
   const stakedOnlyFinishedPools = useMemo(
     () =>
       finishedPools.filter((pool) => {
         if (pool.isAutoVault) {
-          return accountHasVaultShares
+          return accountHasVaultShares;
         }
-        return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
+        return (
+          pool.userData &&
+          new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
+        );
       }),
-    [finishedPools, accountHasVaultShares],
-  )
+    [finishedPools, accountHasVaultShares]
+  );
   const stakedOnlyOpenPools = useMemo(
     () =>
       openPools.filter((pool) => {
         if (pool.isAutoVault) {
-          return accountHasVaultShares
+          return accountHasVaultShares;
         }
-        return pool.userData && new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
+        return (
+          pool.userData &&
+          new BigNumber(pool.userData.stakedBalance).isGreaterThan(0)
+        );
       }),
-    [openPools, accountHasVaultShares],
-  )
-  const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0
+    [openPools, accountHasVaultShares]
+  );
+  const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0;
 
-  usePollFarmsData()
-  useFetchCakeVault()
-  useFetchPublicPoolsData()
+  usePollFarmsData();
+  useFetchCakeVault();
+  useFetchPublicPoolsData();
 
   useEffect(() => {
     const showMorePools = (entries) => {
-      const [entry] = entries
+      const [entry] = entries;
       if (entry.isIntersecting) {
-        setNumberOfPoolsVisible((poolsCurrentlyVisible) => poolsCurrentlyVisible + NUMBER_OF_POOLS_VISIBLE)
+        setNumberOfPoolsVisible(
+          (poolsCurrentlyVisible) =>
+            poolsCurrentlyVisible + NUMBER_OF_POOLS_VISIBLE
+        );
       }
-    }
+    };
 
     if (!observerIsSet) {
       const loadMoreObserver = new IntersectionObserver(showMorePools, {
-        rootMargin: '0px',
+        rootMargin: "0px",
         threshold: 1,
-      })
-      loadMoreObserver.observe(loadMoreRef.current)
-      setObserverIsSet(true)
+      });
+      loadMoreObserver.observe(loadMoreRef.current);
+      setObserverIsSet(true);
     }
-  }, [observerIsSet])
+  }, [observerIsSet]);
 
-  const showFinishedPools = location.pathname.includes('history')
+  const showFinishedPools = location.pathname.includes("history");
 
-  const handleChangeSearchQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value)
-  }
+  const handleChangeSearchQuery = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setSearchQuery(event.target.value);
+  };
 
   const handleSortOptionChange = (option: OptionProps): void => {
-    setSortOption(option.value)
-  }
+    setSortOption(option.value);
+  };
 
   const sortPools = (poolsToSort: Pool[]) => {
     switch (sortOption) {
-      case 'apr':
+      case "apr":
         // Ternary is needed to prevent pools without APR (like MIX) getting top spot
         return orderBy(
           poolsToSort,
-          (pool: Pool) => (pool.apr ? getAprData(pool, performanceFeeAsDecimal).apr : 0),
-          'desc',
-        )
-      case 'earned':
+          (pool: Pool) =>
+            pool.apr ? getAprData(pool, performanceFeeAsDecimal).apr : 0,
+          "desc"
+        );
+      case "earned":
         return orderBy(
           poolsToSort,
           (pool: Pool) => {
             if (!pool.userData || !pool.earningTokenPrice) {
-              return 0
+              return 0;
             }
             return pool.isAutoVault
               ? getCakeVaultEarnings(
@@ -155,76 +203,81 @@ const Pools: React.FC = () => {
                   cakeAtLastUserAction,
                   userShares,
                   pricePerFullShare,
-                  pool.earningTokenPrice,
+                  pool.earningTokenPrice
                 ).autoUsdToDisplay
-              : pool.userData.pendingReward.times(pool.earningTokenPrice).toNumber()
+              : pool.userData.pendingReward
+                  .times(pool.earningTokenPrice)
+                  .toNumber();
           },
-          'desc',
-        )
-      case 'totalStaked':
+          "desc"
+        );
+      case "totalStaked":
         return orderBy(
           poolsToSort,
-          (pool: Pool) => (pool.isAutoVault ? totalCakeInVault.toNumber() : pool.totalStaked.toNumber()),
-          'desc',
-        )
+          (pool: Pool) =>
+            pool.isAutoVault
+              ? totalCakeInVault.toNumber()
+              : pool.totalStaked.toNumber(),
+          "desc"
+        );
       default:
-        return poolsToSort
+        return poolsToSort;
     }
-  }
+  };
 
   const poolsToShow = () => {
-    let chosenPools = []
+    let chosenPools = [];
     if (showFinishedPools) {
-      chosenPools = stakedOnly ? stakedOnlyFinishedPools : finishedPools
+      chosenPools = stakedOnly ? stakedOnlyFinishedPools : finishedPools;
     } else {
-      chosenPools = stakedOnly ? stakedOnlyOpenPools : openPools
+      chosenPools = stakedOnly ? stakedOnlyOpenPools : openPools;
     }
 
     if (searchQuery) {
-      const lowercaseQuery = latinise(searchQuery.toLowerCase())
+      const lowercaseQuery = latinise(searchQuery.toLowerCase());
       chosenPools = chosenPools.filter((pool) =>
-        latinise(pool.earningToken.symbol.toLowerCase()).includes(lowercaseQuery),
-      )
+        latinise(pool.earningToken.symbol.toLowerCase()).includes(
+          lowercaseQuery
+        )
+      );
     }
 
-    return sortPools(chosenPools).slice(0, numberOfPoolsVisible)
-  }
+    return sortPools(chosenPools).slice(0, numberOfPoolsVisible);
+  };
 
   const cardLayout = (
     <CardLayout>
       {poolsToShow().map((pool) =>
         pool.isAutoVault ? (
-          <CakeVaultCard key="auto-cake" pool={pool} showStakedOnly={stakedOnly} />
+          <CakeVaultCard
+            key="auto-cake"
+            pool={pool}
+            showStakedOnly={stakedOnly}
+          />
         ) : (
           <PoolCard key={pool.sousId} pool={pool} account={account} />
-        ),
+        )
       )}
     </CardLayout>
-  )
+  );
 
-  const tableLayout = <PoolsTable pools={poolsToShow()} account={account} userDataLoaded={userDataLoaded} />
+  const tableLayout = (
+    <PoolsTable
+      pools={poolsToShow()}
+      account={account}
+      userDataLoaded={userDataLoaded}
+    />
+  );
 
   return (
     <>
-      <PageHeader>
-        <Flex justifyContent="space-between" flexDirection={['column', null, null, 'row']}>
-          <Flex flex="1" flexDirection="column" mr={['8px', 0]}>
-            <Heading as="h1" scale="xxl" color="secondary" mb="24px">
-              {t('Syrup Pools')}
-            </Heading>
-            <Heading scale="md" color="text">
-              {t('Just stake some tokens to earn.')}
-            </Heading>
-            <Heading scale="md" color="text">
-              {t('High APR, low risk.')}
-            </Heading>
-          </Flex>
-          <Flex flex="1" height="fit-content" justifyContent="center" alignItems="center" mt={['24px', null, '0']}>
-            <HelpButton />
-            <BountyCard />
-          </Flex>
-        </Flex>
-      </PageHeader>
+      <Hero>
+        <Heading as="h1" scale="xl" mb="24px" color="primary">
+          {t("Protein Finance")}
+        </Heading>
+        {/* <Text>{t("Auto Compound Set & Forget")}</Text> */}
+      </Hero>
+
       <Page>
         <PoolControls justifyContent="space-between">
           <PoolTabButtons
@@ -236,27 +289,32 @@ const Pools: React.FC = () => {
           />
           <SearchSortContainer>
             <Flex flexDirection="column" width="50%">
-              <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
-                {t('Sort by')}
+              <Text
+                fontSize="12px"
+                bold
+                color="textSubtle"
+                textTransform="uppercase"
+              >
+                {t("Sort by")}
               </Text>
               <ControlStretch>
                 <Select
                   options={[
                     {
-                      label: t('Hot'),
-                      value: 'hot',
+                      label: t("Hot"),
+                      value: "hot",
                     },
                     {
-                      label: t('APR'),
-                      value: 'apr',
+                      label: t("APR"),
+                      value: "apr",
                     },
                     {
-                      label: t('Earned'),
-                      value: 'earned',
+                      label: t("Earned"),
+                      value: "earned",
                     },
                     {
-                      label: t('Total staked'),
-                      value: 'totalStaked',
+                      label: t("Total staked"),
+                      value: "totalStaked",
                     },
                   ]}
                   onChange={handleSortOptionChange}
@@ -264,18 +322,28 @@ const Pools: React.FC = () => {
               </ControlStretch>
             </Flex>
             <Flex flexDirection="column" width="50%">
-              <Text fontSize="12px" bold color="textSubtle" textTransform="uppercase">
-                {t('Search')}
+              <Text
+                fontSize="12px"
+                bold
+                color="textSubtle"
+                textTransform="uppercase"
+              >
+                {t("Search")}
               </Text>
               <ControlStretch>
-                <SearchInput onChange={handleChangeSearchQuery} placeholder="Search Pools" />
+                <SearchInput
+                  onChange={handleChangeSearchQuery}
+                  placeholder="Search Pools"
+                />
               </ControlStretch>
             </Flex>
           </SearchSortContainer>
         </PoolControls>
         {showFinishedPools && (
           <Text fontSize="20px" color="failure" pb="32px">
-            {t('These pools are no longer distributing rewards. Please unstake your tokens.')}
+            {t(
+              "These pools are no longer distributing rewards. Please unstake your tokens."
+            )}
           </Text>
         )}
         {viewMode === ViewMode.CARD ? cardLayout : tableLayout}
@@ -290,7 +358,7 @@ const Pools: React.FC = () => {
         />
       </Page>
     </>
-  )
-}
+  );
+};
 
-export default Pools
+export default Pools;

@@ -46,65 +46,65 @@ const App: React.FC = () => {
   usePollCoreFarmData();
 
   return (
-    <Router history={history}>
-      <ResetCSS />
-      <GlobalStyle />
-      <Container maxW="container.xl">
-        <NavBar />
-        {/* <Menu>
-        <SuspenseWithChunkError fallback={<PageLoader />}>
-          <Switch>
-            <Route path="/" exact>
-              <Home />
-            </Route>
-            <Route path="/farms">
-              <Farms />
-            </Route>
-            <Route path="/pools">
-              <Pools />
-            </Route>
-            <Route path="/lottery">
-              <Lottery />
-            </Route>
-            <Route path="/ifo">
-              <Ifos />
-            </Route>
-            <Route path="/collectibles">
-              <Collectibles />
-            </Route>
-            <Route exact path="/teams">
-              <Teams />
-            </Route>
-            <Route path="/teams/:id">
-              <Team />
-            </Route>
-            <Route path="/profile">
-              <Profile />
-            </Route>
-            <Route path="/competition">
-              <TradingCompetition />
-            </Route>
-            <Route path="/prediction">
-              <Predictions />
-            </Route>
-            <Route path="/staking">
-              <Redirect to="/pools" />
-            </Route>
-            <Route path="/syrup">
-              <Redirect to="/pools" />
-            </Route>
-            <Route path="/nft">
-              <Redirect to="/collectibles" />
-            </Route>
-
-            <Route component={NotFound} />
-          </Switch>
-        </SuspenseWithChunkError>
-      </Menu> */}
-        <EasterEgg iterations={2} />
-        <ToastListener />
-      </Container>
-    </Router>
+    <Box
+      bgGradient="linear(to bottom, #212121, #261d28, #311526, #3d0a1b, #430000)"
+      h="100%"
+    >
+      <Router history={history}>
+        <Container maxW="container.xl">
+          <NavBar />
+          <SuspenseWithChunkError fallback={<PageLoader />}>
+            <Switch>
+              <Route path="/" exact>
+                <Pools />
+              </Route>
+              <Route path="/farms">
+                <Farms />
+              </Route>
+              <Route path="/pools"></Route>
+              <Route path="/lottery">
+                <Lottery />
+              </Route>
+              <Route path="/ifo">
+                <Ifos />
+              </Route>
+              <Route path="/collectibles">
+                <Collectibles />
+              </Route>
+              <Route exact path="/teams">
+                <Teams />
+              </Route>
+              <Route path="/teams/:id">
+                <Team />
+              </Route>
+              <Route path="/profile">
+                <Profile />
+              </Route>
+              <Route path="/competition">
+                <TradingCompetition />
+              </Route>
+              <Route path="/prediction">
+                <Predictions />
+              </Route>
+              {/* Redirect */}
+              <Route path="/staking">
+                <Redirect to="/pools" />
+              </Route>
+              <Route path="/syrup">
+                <Redirect to="/pools" />
+              </Route>
+              <Route path="/nft">
+                <Redirect to="/collectibles" />
+              </Route>
+              {/* 404 */}
+              <Route component={NotFound} />
+            </Switch>
+          </SuspenseWithChunkError>
+          <EasterEgg iterations={2} />
+          <ToastListener />
+        </Container>
+      </Router>
+    </Box>
   );
 };
 

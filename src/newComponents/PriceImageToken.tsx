@@ -8,9 +8,7 @@ const PriceImageToken = () => {
   return (
     <Stack isInline>
       <Image src="/images/cake.svg" alt="cake logo" width={25} height={25} />
-      <Text fontSize="lg" pt={1}>{`$${cakePriceUsd
-        .toNumber()
-        .toFixed(2)}`}</Text>
+      <Text fontSize="lg">{`$${cakePriceUsd.toNumber().toFixed(2)}`}</Text>
     </Stack>
   );
 };
