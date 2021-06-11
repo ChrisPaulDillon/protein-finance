@@ -5,7 +5,6 @@ import { usePriceCakeBusd } from "state/hooks";
 
 const PriceImageToken = () => {
   const cakePriceUsd = usePriceCakeBusd();
-  console.log(cakePriceUsd);
 
   return (
     <Box>
