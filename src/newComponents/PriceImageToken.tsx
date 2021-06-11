@@ -5,11 +5,23 @@ import { usePriceCakeBusd } from "state/hooks";
 
 const PriceImageToken = () => {
   const cakePriceUsd = usePriceCakeBusd();
+  console.log(cakePriceUsd);
+
   return (
-    <Stack isInline>
-      <Image src="/images/cake.svg" alt="cake logo" width={25} height={25} />
-      <Text fontSize="lg">{`$${cakePriceUsd.toNumber().toFixed(2)}`}</Text>
-    </Stack>
+    <Box>
+      {cakePriceUsd.s && (
+        <Stack isInline>
+          {" "}
+          <Image
+            src="/images/cake.svg"
+            alt="cake logo"
+            width={25}
+            height={25}
+          />
+          <Text fontSize="lg">{`$${cakePriceUsd.toNumber().toFixed(2)}`}</Text>
+        </Stack>
+      )}{" "}
+    </Box>
   );
 };
 

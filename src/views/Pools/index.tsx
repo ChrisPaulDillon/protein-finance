@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import BigNumber from "bignumber.js";
 import { useWeb3React } from "@web3-react/core";
-import { Heading, Flex, Image, Text } from "@pancakeswap/uikit";
+import { Heading, Flex, Image, Text, Skeleton } from "@pancakeswap/uikit";
 import orderBy from "lodash/orderBy";
 import partition from "lodash/partition";
 import { useTranslation } from "contexts/Localization";
@@ -18,7 +18,6 @@ import {
 import { latinise } from "utils/latinise";
 import FlexLayout from "components/layout/Flex";
 import Page from "components/layout/Page";
-import PageHeader from "components/PageHeader";
 import SearchInput from "components/SearchInput";
 import Select, { OptionProps } from "components/Select/Select";
 import { Pool } from "state/types";
@@ -30,6 +29,8 @@ import HelpButton from "./components/HelpButton";
 import PoolsTable from "./components/PoolsTable/PoolsTable";
 import { ViewMode } from "./components/ToggleView/ToggleView";
 import { getAprData, getCakeVaultEarnings } from "./helpers";
+import VaultCard from "newComponents/VaultCard";
+import { useGetStats } from "hooks/api";
 
 const Hero = styled.div`
   align-items: center;
@@ -255,7 +256,8 @@ const Pools: React.FC = () => {
             showStakedOnly={stakedOnly}
           />
         ) : (
-          <PoolCard key={pool.sousId} pool={pool} account={account} />
+          //  <PoolCard key={pool.sousId} pool={pool} account={account} />
+          <VaultCard key={pool.sousId} pool={pool} account={account} />
         )
       )}
     </CardLayout>
@@ -269,13 +271,25 @@ const Pools: React.FC = () => {
     />
   );
 
+  const data = useGetStats();
+  const tvl = data
+    ? data.tvl.toLocaleString("en-US", { maximumFractionDigits: 0 })
+    : null;
+
   return (
     <>
       <Hero>
         <Heading as="h1" scale="xl" mb="24px" color="primary">
           {t("Protein Finance")}
         </Heading>
-        {/* <Text>{t("Auto Compound Set & Forget")}</Text> */}
+        {data ? (
+          <>
+            <Heading scale="xl">{`$${tvl}`}</Heading>
+            <Text color="textSubtle">{t("Total Value Locked")}</Text>
+          </>
+        ) : (
+          <Skeleton height={66} />
+        )}
       </Hero>
 
       <Page>
