@@ -28,6 +28,7 @@ const VaultCardHeader: React.FC<{
   const poolImageSrc = isAutoVault
     ? `cake-cakevault.svg`
     : `${earningTokenSymbol}-${stakingTokenSymbol}.svg`.toLocaleLowerCase();
+
   const isCakePool =
     earningTokenSymbol === "CAKE" && stakingTokenSymbol === "CAKE";
 

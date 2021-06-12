@@ -10,7 +10,7 @@ import HelpButton from "../components/HelpButton";
 import PoolsTable from "../components/PoolsTable/PoolsTable";
 import { ViewMode } from "../components/ToggleView/ToggleView";
 import { getAprData, getCakeVaultEarnings } from "../helpers";
-import VaultCard from "newComponents/VaultCard";
+import VaultCard from "views/Pools/newComponents/VaultCard";
 import { useCakeVault, usePools } from "state/hooks";
 import { useWeb3React } from "@web3-react/core";
 import usePersistState from "hooks/usePersistState";
@@ -47,15 +47,12 @@ const ControlStretch = styled(Flex)`
 
 const VaultContainer = () => {
   const { t } = useTranslation();
-  const NUMBER_OF_POOLS_VISIBLE = 12;
   const { account } = useWeb3React();
   const { pools: poolsWithoutAutoVault, userDataLoaded } = usePools(account);
   const [stakedOnly, setStakedOnly] = usePersistState(false, {
     localStorageKey: "pancake_pool_staked",
   });
-  const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(
-    NUMBER_OF_POOLS_VISIBLE
-  );
+
   const [observerIsSet, setObserverIsSet] = useState(false);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const [viewMode, setViewMode] = usePersistState(ViewMode.TABLE, {
@@ -69,6 +66,11 @@ const VaultContainer = () => {
     pricePerFullShare,
     totalCakeInVault,
   } = useCakeVault();
+
+  const NUMBER_OF_POOLS_VISIBLE = 12;
+  const [numberOfPoolsVisible, setNumberOfPoolsVisible] = useState(
+    NUMBER_OF_POOLS_VISIBLE
+  );
   const accountHasVaultShares = userShares && userShares.gt(0);
   const performanceFeeAsDecimal = performanceFee && performanceFee / 100;
 
@@ -106,6 +108,7 @@ const VaultContainer = () => {
       }),
     [finishedPools, accountHasVaultShares]
   );
+
   const stakedOnlyOpenPools = useMemo(
     () =>
       openPools.filter((pool) => {
@@ -119,6 +122,7 @@ const VaultContainer = () => {
       }),
     [openPools, accountHasVaultShares]
   );
+
   const hasStakeInFinishedPools = stakedOnlyFinishedPools.length > 0;
 
   const sortPools = (poolsToSort: Pool[]) => {

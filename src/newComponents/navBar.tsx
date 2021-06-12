@@ -11,7 +11,6 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
-  MenuDivider,
   useDisclosure,
   useColorModeValue,
   Stack,
@@ -22,12 +21,11 @@ import UnlockButton from "../components/UnlockButton";
 import { useWeb3React } from "@web3-react/core";
 import useAuth from "../hooks/useAuth";
 import { DarkModeButton } from "newComponents/DarkModeButton";
-import { usePriceCakeBusd } from "state/hooks";
 import PriceImageToken from "./PriceImageToken";
 
-const Links = ["Docs", "Farm"];
+const Links = ["Docs", "Farm", "Dashboard"];
 
-const NavLink = ({ children }: { children: ReactNode }) => (
+const NavLink = ({ href, children }) => (
   <Link
     px={2}
     py={1}
@@ -36,7 +34,7 @@ const NavLink = ({ children }: { children: ReactNode }) => (
       textDecoration: "none",
       bg: useColorModeValue("gray.200", "gray.700"),
     }}
-    href={"#"}
+    href={href}
   >
     <Heading fontSize="lg" fontWeight="extrabold">
       {children}
@@ -78,7 +76,9 @@ const NavBar = () => {
               w="100%"
             >
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link} href={`/${link}`}>
+                  {link}
+                </NavLink>
               ))}
             </HStack>
           </HStack>
@@ -109,7 +109,9 @@ const NavBar = () => {
           <Box pb={4} display={{ md: "none" }}>
             <Stack as={"nav"} spacing={4}>
               {Links.map((link) => (
-                <NavLink key={link}>{link}</NavLink>
+                <NavLink key={link} href={`/${link}`}>
+                  {link}
+                </NavLink>
               ))}
             </Stack>
           </Box>

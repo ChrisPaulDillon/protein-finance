@@ -19,7 +19,7 @@ import { Box, Container } from "@chakra-ui/react";
 // Only pool is included in the main bundle because of it's the most visited page
 const Home = lazy(() => import("./views/Home"));
 const Farms = lazy(() => import("./views/Farms"));
-const Lottery = lazy(() => import("./views/Lottery"));
+const Dashboard = lazy(() => import("./views/Dashboard"));
 const NotFound = lazy(() => import("./views/NotFound"));
 
 // This config is required for number formatting
@@ -46,23 +46,10 @@ const App: React.FC = () => {
               <Route path="/" exact>
                 <Pools />
               </Route>
-              <Route path="/farms">
-                <Farms />
+              <Route path="/dashboard">
+                <Dashboard />
               </Route>
-              <Route path="/pools"></Route>
-              <Route path="/lottery">
-                <Lottery />
-              </Route>
-              {/* Redirect */}
-              <Route path="/staking">
-                <Redirect to="/pools" />
-              </Route>
-              <Route path="/syrup">
-                <Redirect to="/pools" />
-              </Route>
-              <Route path="/nft">
-                <Redirect to="/collectibles" />
-              </Route>
+
               {/* 404 */}
               <Route component={NotFound} />
             </Switch>

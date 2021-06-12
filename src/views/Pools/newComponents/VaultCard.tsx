@@ -19,7 +19,7 @@ import CardActions from "views/Pools/components/PoolCard/CardActions";
 import { BIG_ZERO } from "utils/bigNumber";
 import BigNumber from "bignumber.js";
 import StyledCardHeader from "views/Pools/components/PoolCard/StyledCardHeader";
-import VaultCardHeader from "./VaultCardHeader";
+import VaultCardHeader from "../../../newComponents/VaultCardHeader";
 
 const VaultCard: React.FC<{ pool: Pool; account: string }> = ({
   pool,
