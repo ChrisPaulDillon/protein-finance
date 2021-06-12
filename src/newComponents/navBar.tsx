@@ -49,9 +49,7 @@ const NavLink = ({ href, children }) => {
       href={href}
       color={linkColour()}
     >
-      <Heading fontSize="lg" fontWeight="extrabold">
-        {children}
-      </Heading>
+      <Heading fontSize="lg">{children}</Heading>
     </Link>
   );
 };
