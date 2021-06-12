@@ -1,3 +1,4 @@
+import { Feature, FeatureFlag } from "components/FeatureFlag";
 import {
   usePollFarmsData,
   useFetchCakeVault,
@@ -19,14 +20,16 @@ const Dashboard = () => {
   ];
 
   return (
-    <Page>
-      {platforms?.map((item) => (
-        <DashboardContainer
-          platform={item.platform}
-          imgSource={item.imgSource}
-        />
-      ))}
-    </Page>
+    <FeatureFlag featureFlag={Feature.DASHBOARD}>
+      <Page>
+        {platforms?.map((item) => (
+          <DashboardContainer
+            platform={item.platform}
+            imgSource={item.imgSource}
+          />
+        ))}
+      </Page>
+    </FeatureFlag>
   );
 };
 

@@ -3,7 +3,11 @@ import { Router, Redirect, Route, Switch } from "react-router-dom";
 import { ResetCSS } from "@pancakeswap/uikit";
 import BigNumber from "bignumber.js";
 import useEagerConnect from "hooks/useEagerConnect";
-import { usePollCoreFarmData, usePollBlockNumber } from "state/hooks";
+import {
+  usePollCoreFarmData,
+  usePollBlockNumber,
+  useFeatureFlag,
+} from "state/hooks";
 import GlobalStyle from "./style/Global";
 import Menu from "./components/Menu";
 import SuspenseWithChunkError from "./components/SuspenseWithChunkError";
@@ -32,6 +36,7 @@ const App: React.FC = () => {
   usePollBlockNumber();
   useEagerConnect();
   usePollCoreFarmData();
+  useFeatureFlag();
 
   return (
     <Box
@@ -44,12 +49,17 @@ const App: React.FC = () => {
           <SuspenseWithChunkError fallback={<PageLoader />}>
             <Switch>
               <Route path="/" exact>
-                <Pools />
+                <Dashboard />
               </Route>
               <Route path="/dashboard">
                 <Dashboard />
               </Route>
-
+              <Route path="/farm">
+                <Pools />
+              </Route>
+              <Route path="/docs">
+                <Pools />
+              </Route>
               {/* 404 */}
               <Route component={NotFound} />
             </Switch>

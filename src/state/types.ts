@@ -2,6 +2,7 @@ import { ThunkAction } from "redux-thunk";
 import { AnyAction } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
 import { FarmConfig, Nft, PoolConfig, Team } from "config/constants/types";
+import { Feature } from "../components/FeatureFlag";
 
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
@@ -113,10 +114,17 @@ export interface BlockState {
   initialBlock: number;
 }
 
+// Generic
+
+export interface GenericState {
+  features: Feature[];
+}
+
 // Global state
 
 export interface State {
   block: BlockState;
   farms: FarmsState;
   pools: PoolsState;
+  generic: GenericState;
 }

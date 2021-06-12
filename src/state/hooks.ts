@@ -22,6 +22,8 @@ import { State, Farm, Pool, FarmsState } from "./types";
 import { transformPool } from "./pools/helpers";
 import { fetchPoolsStakingLimitsAsync } from "./pools";
 import { fetchFarmUserDataAsync, nonArchivedFarms } from "./farms";
+import { setFeaturesEnabled } from "./generic";
+import { Feature } from "../components/FeatureFlag";
 
 export const usePollFarmsData = (includeArchive = false) => {
   const dispatch = useAppDispatch();
@@ -297,4 +299,11 @@ export const useBlock = () => {
 
 export const useInitialBlock = () => {
   return useSelector((state: State) => state.block.initialBlock);
+};
+
+export const useFeatureFlag = () => {
+  const dispatch = useAppDispatch();
+  const features = process.env.REACT_APP_FEATURES;
+  const featureArr = features.split(",") as Feature[];
+  dispatch(setFeaturesEnabled(featureArr));
 };
