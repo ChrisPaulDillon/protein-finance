@@ -22,25 +22,39 @@ import { useWeb3React } from "@web3-react/core";
 import useAuth from "../hooks/useAuth";
 import { DarkModeButton } from "newComponents/DarkModeButton";
 import PriceImageToken from "./PriceImageToken";
+import { useLocation } from "react-router-dom";
 
 const Links = ["Docs", "Farm", "Dashboard"];
 
-const NavLink = ({ href, children }) => (
-  <Link
-    px={2}
-    py={1}
-    rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: useColorModeValue("gray.200", "gray.700"),
-    }}
-    href={href}
-  >
-    <Heading fontSize="lg" fontWeight="extrabold">
-      {children}
-    </Heading>
-  </Link>
-);
+const NavLink = ({ href, children }) => {
+  const location = useLocation();
+
+  const linkColour = (): string => {
+    if (location.pathname === href) {
+      return "green";
+    } else {
+      return "white";
+    }
+  };
+
+  return (
+    <Link
+      px={2}
+      py={1}
+      rounded={"md"}
+      _hover={{
+        textDecoration: "none",
+        bg: useColorModeValue("gray.200", "gray.700"),
+      }}
+      href={href}
+      color={linkColour()}
+    >
+      <Heading fontSize="lg" fontWeight="extrabold">
+        {children}
+      </Heading>
+    </Link>
+  );
+};
 
 const NavBar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
