@@ -12,15 +12,15 @@ import {
 import { ConnectorNames, connectorLocalStorageKey } from "@pancakeswap/uikit";
 import { connectorsByName } from "utils/web3React";
 import { setupNetwork } from "utils/wallet";
-import useToast from "hooks/useToast";
 import { useAppDispatch } from "state";
 import { useTranslation } from "contexts/Localization";
+import useFireToast from "newHooks/useFireToast";
 
 const useAuth = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { activate, deactivate } = useWeb3React();
-  const { toastError } = useToast();
+  const { toastError } = useFireToast();
 
   const login = useCallback(
     (connectorID: ConnectorNames) => {
@@ -63,7 +63,7 @@ const useAuth = () => {
         );
       }
     },
-    [t, activate, toastError]
+    [t, activate]
   );
 
   const logout = useCallback(() => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
   Modal,
   Text,
@@ -10,23 +10,23 @@ import {
   ButtonMenuItem,
   HelpIcon,
   useTooltip,
-} from '@pancakeswap/uikit'
-import { useTranslation } from 'contexts/Localization'
-import useTheme from 'hooks/useTheme'
-import { useSousHarvest } from 'hooks/useHarvest'
-import { useSousStake } from 'hooks/useStake'
-import useToast from 'hooks/useToast'
-import { Token } from 'config/constants/types'
+} from "@pancakeswap/uikit";
+import { useTranslation } from "contexts/Localization";
+import useTheme from "hooks/useTheme";
+import { useSousHarvest } from "hooks/useHarvest";
+import { useSousStake } from "hooks/useStake";
+import { Token } from "config/constants/types";
+import useFireToast from "newHooks/useFireToast";
 
 interface CollectModalProps {
-  formattedBalance: string
-  fullBalance: string
-  earningToken: Token
-  earningsDollarValue: string
-  sousId: number
-  isBnbPool: boolean
-  isCompoundPool?: boolean
-  onDismiss?: () => void
+  formattedBalance: string;
+  fullBalance: string;
+  earningToken: Token;
+  earningsDollarValue: string;
+  sousId: number;
+  isBnbPool: boolean;
+  isCompoundPool?: boolean;
+  onDismiss?: () => void;
 }
 
 const CollectModal: React.FC<CollectModalProps> = ({
@@ -39,57 +39,71 @@ const CollectModal: React.FC<CollectModalProps> = ({
   isCompoundPool = false,
   onDismiss,
 }) => {
-  const { t } = useTranslation()
-  const { theme } = useTheme()
-  const { toastSuccess, toastError } = useToast()
-  const { onReward } = useSousHarvest(sousId, isBnbPool)
-  const { onStake } = useSousStake(sousId, isBnbPool)
-  const [pendingTx, setPendingTx] = useState(false)
-  const [shouldCompound, setShouldCompound] = useState(isCompoundPool)
+  const { t } = useTranslation();
+  const { theme } = useTheme();
+  const { toastSuccess, toastError } = useFireToast();
+  const { onReward } = useSousHarvest(sousId, isBnbPool);
+  const { onStake } = useSousStake(sousId, isBnbPool);
+  const [pendingTx, setPendingTx] = useState(false);
+  const [shouldCompound, setShouldCompound] = useState(isCompoundPool);
   const { targetRef, tooltip, tooltipVisible } = useTooltip(
     <>
-      <Text mb="12px">{t('Compound: collect and restake CAKE into pool.')}</Text>
-      <Text>{t('Harvest: collect CAKE and send to wallet')}</Text>
+      <Text mb="12px">
+        {t("Compound: collect and restake CAKE into pool.")}
+      </Text>
+      <Text>{t("Harvest: collect CAKE and send to wallet")}</Text>
     </>,
-    { placement: 'bottom-end', tooltipOffset: [20, 10] },
-  )
+    { placement: "bottom-end", tooltipOffset: [20, 10] }
+  );
 
   const handleHarvestConfirm = async () => {
-    setPendingTx(true)
+    setPendingTx(true);
     // compounding
     if (shouldCompound) {
       try {
-        await onStake(fullBalance, earningToken.decimals)
+        await onStake(fullBalance, earningToken.decimals);
         toastSuccess(
-          `${t('Compounded')}!`,
-          t('Your %symbol% earnings have been re-invested into the pool!', { symbol: earningToken.symbol }),
-        )
-        setPendingTx(false)
-        onDismiss()
+          `${t("Compounded")}!`,
+          t("Your %symbol% earnings have been re-invested into the pool!", {
+            symbol: earningToken.symbol,
+          })
+        );
+        setPendingTx(false);
+        onDismiss();
       } catch (e) {
-        toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
-        setPendingTx(false)
+        toastError(
+          t("Canceled"),
+          t("Please try again and confirm the transaction.")
+        );
+        setPendingTx(false);
       }
     } else {
       // harvesting
       try {
-        await onReward()
+        await onReward();
         toastSuccess(
-          `${t('Harvested')}!`,
-          t('Your %symbol% earnings have been sent to your wallet!', { symbol: earningToken.symbol }),
-        )
-        setPendingTx(false)
-        onDismiss()
+          `${t("Harvested")}!`,
+          t("Your %symbol% earnings have been sent to your wallet!", {
+            symbol: earningToken.symbol,
+          })
+        );
+        setPendingTx(false);
+        onDismiss();
       } catch (e) {
-        toastError(t('Canceled'), t('Please try again and confirm the transaction.'))
-        setPendingTx(false)
+        toastError(
+          t("Canceled"),
+          t("Please try again and confirm the transaction.")
+        );
+        setPendingTx(false);
       }
     }
-  }
+  };
 
   return (
     <Modal
-      title={`${earningToken.symbol} ${isCompoundPool ? t('Collect') : t('Harvest')}`}
+      title={`${earningToken.symbol} ${
+        isCompoundPool ? t("Collect") : t("Harvest")
+      }`}
       onDismiss={onDismiss}
       headerBackground={theme.colors.gradients.cardHeader}
     >
@@ -101,8 +115,8 @@ const CollectModal: React.FC<CollectModalProps> = ({
             variant="subtle"
             onItemClick={(index) => setShouldCompound(!index)}
           >
-            <ButtonMenuItem as="button">{t('Compound')}</ButtonMenuItem>
-            <ButtonMenuItem as="button">{t('Harvest')}</ButtonMenuItem>
+            <ButtonMenuItem as="button">{t("Compound")}</ButtonMenuItem>
+            <ButtonMenuItem as="button">{t("Harvest")}</ButtonMenuItem>
           </ButtonMenu>
           <Flex ml="10px" ref={targetRef}>
             <HelpIcon color="textSubtle" />
@@ -112,12 +126,14 @@ const CollectModal: React.FC<CollectModalProps> = ({
       )}
 
       <Flex justifyContent="space-between" alignItems="center" mb="24px">
-        <Text>{shouldCompound ? t('Compounding') : t('Harvesting')}:</Text>
+        <Text>{shouldCompound ? t("Compounding") : t("Harvesting")}:</Text>
         <Flex flexDirection="column">
           <Heading>
             {formattedBalance} {earningToken.symbol}
           </Heading>
-          <Text fontSize="12px" color="textSubtle">{`~${earningsDollarValue || 0} USD`}</Text>
+          <Text fontSize="12px" color="textSubtle">{`~${
+            earningsDollarValue || 0
+          } USD`}</Text>
         </Flex>
       </Flex>
 
@@ -127,13 +143,13 @@ const CollectModal: React.FC<CollectModalProps> = ({
         isLoading={pendingTx}
         endIcon={pendingTx ? <AutoRenewIcon spin color="currentColor" /> : null}
       >
-        {pendingTx ? t('Confirming') : t('Confirm')}
+        {pendingTx ? t("Confirming") : t("Confirm")}
       </Button>
       <Button variant="text" onClick={onDismiss} pb="0px">
-        {t('Close Window')}
+        {t("Close Window")}
       </Button>
     </Modal>
-  )
-}
+  );
+};
 
-export default CollectModal
+export default CollectModal;

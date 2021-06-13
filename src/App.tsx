@@ -8,7 +8,6 @@ import {
   useFeatureFlag,
 } from "state/hooks";
 import SuspenseWithChunkError from "./components/SuspenseWithChunkError";
-import ToastListener from "./components/ToastListener";
 import PageLoader from "./components/PageLoader";
 import EasterEgg from "./components/EasterEgg";
 import Pools from "./views/Pools";
@@ -33,7 +32,6 @@ const App: React.FC = () => {
   useEagerConnect();
   usePollCoreFarmData();
   useFeatureFlag();
-
   return (
     <Box
       bgGradient="linear(to bottom, #212121, #261d28, #311526, #3d0a1b, #430000)"
@@ -61,7 +59,6 @@ const App: React.FC = () => {
             </Switch>
           </SuspenseWithChunkError>
           <EasterEgg iterations={2} />
-          <ToastListener />
         </Container>
         <Footer />
       </Router>
