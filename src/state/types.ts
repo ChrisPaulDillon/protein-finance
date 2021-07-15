@@ -3,6 +3,14 @@ import { AnyAction } from "@reduxjs/toolkit";
 import BigNumber from "bignumber.js";
 import { FarmConfig, Nft, PoolConfig, Team } from "config/constants/types";
 import { Feature } from "../components/FeatureFlag";
+import { TransactionState } from "./swap/transactions/reducer";
+import { SwapState } from "./swap/swap/reducer";
+import { UserState } from "./swap/user/reducer";
+import { ListsState } from "./swap/lists/reducer";
+import { ApplicationState } from "./swap/application/reducer";
+import { MintState } from "./swap/mint/reducer";
+import { BurnState } from "./swap/burn/reducer";
+import { MulticallState } from "./swap/multicall/reducer";
 
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
@@ -127,4 +135,12 @@ export interface State {
   farms: FarmsState;
   pools: PoolsState;
   generic: GenericState;
+  transactions: TransactionState;
+  swap: SwapState;
+  user: UserState;
+  lists: ListsState;
+  application: ApplicationState;
+  mint: MintState;
+  burn: BurnState;
+  multicall: MulticallState;
 }

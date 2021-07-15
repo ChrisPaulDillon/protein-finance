@@ -41,6 +41,7 @@ const rootReducer = {
   lists,
   burn,
   multicall,
+  transactions,
 };
 
 const reducer = combineReducers({ ...rootReducer });
