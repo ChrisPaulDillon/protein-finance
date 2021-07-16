@@ -5,6 +5,7 @@ import {
   Token,
   Trade,
 } from "@pancakeswap-libs/sdk";
+import { useWeb3React } from "@web3-react/core";
 import flatMap from "lodash.flatmap";
 import { useMemo } from "react";
 
@@ -15,10 +16,8 @@ import {
 import { PairState, usePairs } from "../../config/data/Reserves";
 import { wrappedCurrency } from "../../utils/swap/wrappedCurrency";
 
-import { useActiveWeb3React } from "./index";
-
 function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): Pair[] {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
 
   // Base tokens for building intermediary trading routes
   const bases: Token[] = useMemo(

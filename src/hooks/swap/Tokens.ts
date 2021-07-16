@@ -1,5 +1,6 @@
 import { parseBytes32String } from "@ethersproject/strings";
 import { Currency, ETHER, Token, currencyEquals } from "@pancakeswap-libs/sdk";
+import { useWeb3React } from "@web3-react/core";
 import { useMemo } from "react";
 import { useSelectedTokenList } from "../../state/swap/lists/hooks";
 import {
@@ -10,11 +11,10 @@ import {
 import { useUserAddedTokens } from "../../state/swap/user/hooks";
 import { isAddress } from "../../utils/swap";
 
-import { useActiveWeb3React } from "./index";
 import { useBytes32TokenContract, useTokenContract } from "./useContract";
 
 export function useAllTokens(): { [address: string]: Token } {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   const userAddedTokens = useUserAddedTokens();
   const allTokens = useSelectedTokenList();
 
@@ -60,7 +60,7 @@ function parseStringOrBytes32(
 // null if loading
 // otherwise returns the token
 export function useToken(tokenAddress?: string): Token | undefined | null {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   const tokens = useAllTokens();
 
   const address = isAddress(tokenAddress);

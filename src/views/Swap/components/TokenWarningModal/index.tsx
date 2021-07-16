@@ -8,11 +8,11 @@ import { ExternalLink } from "../Shared";
 import CurrencyLogo from "../CurrencyLogo";
 import { AutoRow, RowBetween } from "../Row";
 import { AutoColumn } from "../Column";
-import { useActiveWeb3React } from "hooks/swap";
 import { useAllTokens } from "hooks/swap/Tokens";
 import useI18n from "hooks/swap/useI18n";
 import { getBscScanLink, shortenAddress } from "utils/swap";
 import { Modal } from "@chakra-ui/react";
+import { useWeb3React } from "@web3-react/core";
 
 const Wrapper = styled.div<{ error: boolean }>`
   background: ${({ theme }) => transparentize(0.6, theme.colors.tertiary)};
@@ -39,7 +39,7 @@ interface TokenWarningCardProps {
 }
 
 function TokenWarningCard({ token }: TokenWarningCardProps) {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   const TranslateString = useI18n();
   const tokenSymbol = token?.symbol?.toLowerCase() ?? "";
   const tokenName = token?.name?.toLowerCase() ?? "";

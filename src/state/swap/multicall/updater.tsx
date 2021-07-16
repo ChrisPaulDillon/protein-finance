@@ -1,7 +1,6 @@
 import { Contract } from "@ethersproject/contracts";
 import { useEffect, useMemo, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useActiveWeb3React } from "../../../hooks/swap";
 import { useMulticallContract } from "../../../hooks/swap/useContract";
 import useDebounce from "../../../hooks/swap/useDebounce";
 import chunkArray from "../../../utils/swap/chunkArray";
@@ -19,6 +18,7 @@ import {
   parseCallKey,
   updateMulticallResults,
 } from "./actions";
+import { useWeb3React } from "@web3-react/core";
 
 // chunk calls so we do not exceed the gas limit
 const CALL_CHUNK_SIZE = 500;
@@ -130,7 +130,7 @@ export default function Updater(): null {
   // wait for listeners to settle before triggering updates
   const debouncedListeners = useDebounce(state.callListeners, 100);
   const latestBlockNumber = useBlockNumber();
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   const multicallContract = useMulticallContract();
   const cancellations =
     useRef<{ blockNumber: number; cancellations: (() => void)[] }>();

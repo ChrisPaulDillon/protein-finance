@@ -1,9 +1,9 @@
 import { Currency, currencyEquals, ETHER, WETH } from "@pancakeswap-libs/sdk";
+import { useWeb3React } from "@web3-react/core";
 import { useMemo } from "react";
 import { tryParseAmount } from "../../state/swap/swap/hooks";
 import { useTransactionAdder } from "../../state/swap/transactions/hooks";
 import { useCurrencyBalance } from "../../state/swap/wallet/hooks";
-import { useActiveWeb3React } from "./index";
 import { useWETHContract } from "./useContract";
 
 export enum WrapType {
@@ -28,7 +28,7 @@ export default function useWrapCallback(
   execute?: undefined | (() => Promise<void>);
   inputError?: string;
 } {
-  const { chainId, account } = useActiveWeb3React();
+  const { chainId, account } = useWeb3React();
   const wethContract = useWETHContract();
   const balance = useCurrencyBalance(account ?? undefined, inputCurrency);
   // we can always parse the amount typed as the input currency, since wrapping is 1:1

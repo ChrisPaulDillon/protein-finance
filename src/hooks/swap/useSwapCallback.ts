@@ -8,6 +8,7 @@ import {
   Trade,
   TradeType,
 } from "@pancakeswap-libs/sdk";
+import { useWeb3React } from "@web3-react/core";
 import { useMemo } from "react";
 import {
   BIPS_BASE,
@@ -22,7 +23,6 @@ import {
   shortenAddress,
 } from "../../utils/swap";
 import isZero from "../../utils/swap/isZero";
-import { useActiveWeb3React } from "./index";
 import useENS from "./useENS";
 
 enum SwapCallbackState {
@@ -61,7 +61,7 @@ function useSwapCallArguments(
   deadline: number = DEFAULT_DEADLINE_FROM_NOW, // in seconds from now
   recipientAddressOrName: string | null // the ENS name or address of the recipient of the trade, or null if swap should be returned to sender
 ): SwapCall[] {
-  const { account, chainId, library } = useActiveWeb3React();
+  const { account, chainId, library } = useWeb3React();
 
   const { address: recipientAddress } = useENS(recipientAddressOrName);
   const recipient =
@@ -125,7 +125,7 @@ export function useSwapCallback(
   callback: null | (() => Promise<string>);
   error: string | null;
 } {
-  const { account, chainId, library } = useActiveWeb3React();
+  const { account, chainId, library } = useWeb3React();
 
   const swapCalls = useSwapCallArguments(
     trade,

@@ -12,7 +12,6 @@ import { ParsedQs } from "qs";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import useENS from "../../../hooks/swap/useENS";
-import { useActiveWeb3React } from "../../../hooks/swap";
 import { useCurrency } from "../../../hooks/swap/Tokens";
 import { useTradeExactIn, useTradeExactOut } from "../../../hooks/swap/Trades";
 import useParsedQueryString from "../../../hooks/swap/useParsedQueryString";
@@ -31,6 +30,7 @@ import { SwapState } from "./reducer";
 
 import { useUserSlippageTolerance } from "../user/hooks";
 import { computeSlippageAdjustedAmounts } from "../../../utils/swap/prices";
+import { useWeb3React } from "@web3-react/core";
 
 export function useSwapState(): AppState["swap"] {
   return useSelector<AppState, AppState["swap"]>((state) => state.swap);
@@ -137,7 +137,7 @@ export function useDerivedSwapInfo(): {
   v2Trade: Trade | undefined;
   inputError?: string;
 } {
-  const { account } = useActiveWeb3React();
+  const { account } = useWeb3React();
 
   const {
     independentField,
@@ -303,7 +303,7 @@ export function useDefaultsFromURLSearch():
       outputCurrencyId: string | undefined;
     }
   | undefined {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   const dispatch = useDispatch<AppDispatch>();
   const parsedQs = useParsedQueryString();
   const [result, setResult] = useState<

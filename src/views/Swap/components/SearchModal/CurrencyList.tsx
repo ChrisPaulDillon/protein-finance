@@ -21,7 +21,6 @@ import CurrencyLogo from "../CurrencyLogo";
 import { MouseoverTooltip } from "../Tooltip";
 import { FadedSpan, MenuItem } from "./styleds";
 import Loader from "../Loader";
-import { useActiveWeb3React } from "hooks/swap";
 import { useIsUserAddedToken } from "hooks/swap/Tokens";
 import { WrappedTokenInfo, useSelectedTokenList } from "state/swap/lists/hooks";
 import {
@@ -30,6 +29,7 @@ import {
 } from "state/swap/user/hooks";
 import { useCurrencyBalance } from "state/swap/wallet/hooks";
 import { isTokenOnList } from "utils/swap";
+import { useWeb3React } from "@web3-react/core";
 
 function currencyKey(currency: Currency): string {
   return currency instanceof Token
@@ -115,7 +115,7 @@ function CurrencyRow({
   otherSelected: boolean;
   style: CSSProperties;
 }) {
-  const { account, chainId } = useActiveWeb3React();
+  const { account, chainId } = useWeb3React();
   const key = currencyKey(currency);
   const selectedTokenList = useSelectedTokenList();
   const isOnSelectedList = isTokenOnList(selectedTokenList, currency);

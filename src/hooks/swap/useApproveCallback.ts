@@ -17,7 +17,7 @@ import {
 import { computeSlippageAdjustedAmounts } from "../../utils/swap/prices";
 import { calculateGasMargin } from "../../utils/swap";
 import { useTokenContract } from "./useContract";
-import { useActiveWeb3React } from "./index";
+import { useWeb3React } from "@web3-react/core";
 
 export enum ApprovalState {
   UNKNOWN,
@@ -31,7 +31,7 @@ export function useApproveCallback(
   amountToApprove?: CurrencyAmount,
   spender?: string
 ): [ApprovalState, () => Promise<void>] {
-  const { account } = useActiveWeb3React();
+  const { account } = useWeb3React();
   const token =
     amountToApprove instanceof TokenAmount ? amountToApprove.token : undefined;
   const currentAllowance = useTokenAllowance(

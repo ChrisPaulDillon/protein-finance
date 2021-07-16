@@ -27,12 +27,12 @@ import SortButton from "./SortButton";
 import { useTokenComparator } from "./sorting";
 import { PaddedColumn, SearchInput, Separator } from "./styleds";
 import { isAddress } from "utils/swap";
-import { useActiveWeb3React } from "hooks/swap";
 import { useAllTokens, useToken } from "hooks/swap/Tokens";
 import useI18n from "hooks/swap/useI18n";
 import { AppState } from "state";
 import { useSelectedListInfo } from "state/swap/lists/hooks";
 import ListLogo from "../ListLogo";
+import { useWeb3React } from "@web3-react/core";
 
 interface CurrencySearchProps {
   isOpen: boolean;
@@ -54,7 +54,7 @@ export function CurrencySearch({
   onChangeList,
 }: CurrencySearchProps) {
   const { t } = useTranslation();
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   const theme = useContext(ThemeContext);
 
   const fixedList = useRef<FixedSizeList>();

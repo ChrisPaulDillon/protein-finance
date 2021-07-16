@@ -5,16 +5,16 @@ import {
 } from "@uniswap/token-lists";
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useActiveWeb3React } from "../../../hooks/swap";
 import { useFetchListCallback } from "../../../hooks/swap/useFetchListCallback";
 import useInterval from "../../../hooks/swap/useInterval";
 import useIsWindowVisible from "../../../hooks/swap/useIsWindowVisible";
 import { addPopup } from "../application/actions";
 import { AppDispatch, AppState } from "../../index";
 import { acceptListUpdate } from "./actions";
+import { useWeb3React } from "@web3-react/core";
 
 export default function Updater(): null {
-  const { library } = useActiveWeb3React();
+  const { library } = useWeb3React();
   const dispatch = useDispatch<AppDispatch>();
   const lists = useSelector<AppState, AppState["lists"]["byUrl"]>(
     (state) => state.lists.byUrl

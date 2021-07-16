@@ -4,10 +4,10 @@ import { Text } from "@pancakeswap-libs/uikit";
 import { ExternalLink } from "../Shared";
 import { AutoColumn } from "../Column";
 import { RowBetween } from "../Row";
-import { useActiveWeb3React } from "hooks/swap";
 import useENS from "hooks/swap/useENS";
 import useI18n from "hooks/swap/useI18n";
 import { getBscScanLink } from "utils/swap";
+import { useWeb3React } from "@web3-react/core";
 
 const InputPanel = styled.div`
   display: flex;
@@ -83,7 +83,7 @@ export default function AddressInputPanel({
   // triggers whenever the typed value changes
   onChange: (value: string) => void;
 }) {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   const TranslateString = useI18n();
   const { address, loading, name } = useENS(value);
 

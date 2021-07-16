@@ -43,7 +43,6 @@ import Loader from "./components/Loader";
 import PageHeader from "./components/PageHeader";
 import ConnectWalletButton from "./components/ConnectWalletButton";
 import { INITIAL_ALLOWED_SLIPPAGE } from "config/constants/swap";
-import { useActiveWeb3React } from "hooks/swap";
 import { useCurrency } from "hooks/swap/Tokens";
 import {
   useApproveCallbackFromTrade,
@@ -68,6 +67,7 @@ import {
   useUserDeadline,
   useUserSlippageTolerance,
 } from "state/swap/user/hooks";
+import { useWeb3React } from "@web3-react/core";
 
 const StyledLink = styled(Link)`
   display: inline;
@@ -116,7 +116,7 @@ const Swap = () => {
     });
   };
 
-  const { account } = useActiveWeb3React();
+  const { account } = useWeb3React();
   const theme = useContext(ThemeContext);
 
   const [isExpertMode] = useExpertModeManager();

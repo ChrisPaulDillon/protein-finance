@@ -9,13 +9,13 @@ import { isMobile } from "react-device-detect";
 import { injected } from "../../connectors";
 import { NetworkContextName } from "../../config/constants/swap";
 
-export function useActiveWeb3React(): Web3ReactContextInterface<Web3Provider> & {
-  chainId?: ChainId;
-} {
-  const context = useWeb3ReactCore<Web3Provider>();
-  const contextNetwork = useWeb3ReactCore<Web3Provider>(NetworkContextName);
-  return context.active ? context : contextNetwork;
-}
+// export function useWeb3React(): Web3ReactContextInterface<Web3Provider> & {
+//   chainId?: ChainId;
+// } {
+//   const context = useWeb3ReactCore<Web3Provider>();
+//   const contextNetwork = useWeb3ReactCore<Web3Provider>(NetworkContextName);
+//   return context.active ? context : contextNetwork;
+// }
 
 export function useEagerConnect() {
   const { activate, active } = useWeb3ReactCore(); // specifically using useWeb3ReactCore because of what this hook does

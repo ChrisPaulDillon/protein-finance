@@ -12,7 +12,7 @@ import {
   MULTICALL_NETWORKS,
 } from "../../config/constants/swap/multicall";
 import { getContract } from "../../utils/swap";
-import { useActiveWeb3React } from "./index";
+import { useWeb3React } from "@web3-react/core";
 
 // returns null on errors
 function useContract(
@@ -20,7 +20,7 @@ function useContract(
   ABI: any,
   withSignerIfPossible = true
 ): Contract | null {
-  const { library, account } = useActiveWeb3React();
+  const { library, account } = useWeb3React();
 
   return useMemo(() => {
     if (!address || !ABI || !library) return null;
@@ -48,7 +48,7 @@ export function useTokenContract(
 export function useWETHContract(
   withSignerIfPossible?: boolean
 ): Contract | null {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   return useContract(
     chainId ? WETH[chainId].address : undefined,
     WETH_ABI,
@@ -59,7 +59,7 @@ export function useWETHContract(
 export function useENSRegistrarContract(
   withSignerIfPossible?: boolean
 ): Contract | null {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   let address: string | undefined;
   if (chainId) {
     switch (chainId) {
@@ -92,7 +92,7 @@ export function usePairContract(
 }
 
 export function useMulticallContract(): Contract | null {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   return useContract(
     chainId && MULTICALL_NETWORKS[chainId],
     MULTICALL_ABI,

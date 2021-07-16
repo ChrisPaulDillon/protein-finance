@@ -3,7 +3,6 @@ import { BigNumber } from "@ethersproject/bignumber";
 import { Contract } from "@ethersproject/contracts";
 import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useActiveWeb3React } from "../../../hooks/swap";
 import { useBlockNumber } from "../application/hooks";
 import { AppDispatch, AppState } from "../../index";
 import {
@@ -14,6 +13,7 @@ import {
   toCallKey,
   ListenerOptions,
 } from "./actions";
+import { useWeb3React } from "@web3-react/core";
 
 export interface Result extends ReadonlyArray<any> {
   readonly [key: string]: any;
@@ -62,7 +62,7 @@ function useCallsData(
   calls: (Call | undefined)[],
   options?: ListenerOptions
 ): CallResult[] {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   const callResults = useSelector<
     AppState,
     AppState["multicall"]["callResults"]

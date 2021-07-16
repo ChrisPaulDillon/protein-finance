@@ -8,7 +8,6 @@ import {
   Modal,
   Button,
 } from "@pancakeswap-libs/uikit";
-import { useActiveWeb3React } from "hooks/swap";
 import { Loader } from "react-feather";
 import {
   useAllTransactions,
@@ -16,6 +15,7 @@ import {
 } from "state/swap/transactions/hooks";
 import { TransactionDetails } from "state/swap/transactions/reducer";
 import { getBscScanLink } from "utils/swap";
+import { useWeb3React } from "@web3-react/core";
 
 type RecentTransactionsModalProps = {
   onDismiss?: () => void;
@@ -46,7 +46,7 @@ const RecentTransactionsModal = ({
   onDismiss = defaultOnDismiss,
   translateString,
 }: RecentTransactionsModalProps) => {
-  const { account, chainId } = useActiveWeb3React();
+  const { account, chainId } = useWeb3React();
   const allTransactions = useAllTransactions();
 
   // Logic taken from Web3Status/index.tsx line 175

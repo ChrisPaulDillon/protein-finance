@@ -2,10 +2,9 @@ import { TokenAmount, Pair, Currency } from "@pancakeswap-libs/sdk";
 import { useMemo } from "react";
 import { abi as IUniswapV2PairABI } from "@uniswap/v2-core/build/IUniswapV2Pair.json";
 import { Interface } from "@ethersproject/abi";
-import { useActiveWeb3React } from "../../hooks/swap";
-
 import { useMultipleContractSingleData } from "../../state/swap/multicall/hooks";
 import { wrappedCurrency } from "../../utils/swap/wrappedCurrency";
+import { useWeb3React } from "@web3-react/core";
 
 const PAIR_INTERFACE = new Interface(IUniswapV2PairABI);
 
@@ -19,7 +18,7 @@ export enum PairState {
 export function usePairs(
   currencies: [Currency | undefined, Currency | undefined][]
 ): [PairState, Pair | null][] {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
 
   const tokens = useMemo(
     () =>

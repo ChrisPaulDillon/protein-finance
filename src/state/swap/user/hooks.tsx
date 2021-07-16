@@ -7,7 +7,6 @@ import {
   PINNED_PAIRS,
 } from "../../../config/constants/swap";
 
-import { useActiveWeb3React } from "../../../hooks/swap";
 // eslint-disable-next-line import/no-cycle
 import { useAllTokens } from "../../../hooks/swap/Tokens";
 import { AppDispatch, AppState } from "../../index";
@@ -25,6 +24,7 @@ import {
   unmuteAudio,
 } from "./actions";
 import { setThemeCache } from "../../../utils/swap/theme";
+import { useWeb3React } from "@web3-react/core";
 
 function serializeToken(token: Token): SerializedToken {
   return {
@@ -184,7 +184,7 @@ export function useRemoveUserAddedToken(): (
 }
 
 export function useUserAddedTokens(): Token[] {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   const serializedTokensMap = useSelector<AppState, AppState["user"]["tokens"]>(
     ({ user: { tokens } }) => tokens
   );
@@ -234,7 +234,7 @@ export function toV2LiquidityToken([tokenA, tokenB]: [Token, Token]): Token {
  * Returns all the pairs of tokens that are tracked by the user for the current chain ID.
  */
 export function useTrackedTokenPairs(): [Token, Token][] {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
   const tokens = useAllTokens();
 
   // pinned pairs

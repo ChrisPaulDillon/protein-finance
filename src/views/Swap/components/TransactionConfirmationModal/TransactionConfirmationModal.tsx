@@ -1,5 +1,5 @@
 import { Modal } from "@chakra-ui/react";
-import { useActiveWeb3React } from "hooks/swap";
+import { useWeb3React } from "@web3-react/core";
 import React from "react";
 import ConfirmationPendingContent from "./ConfirmationPendingContent";
 import TransactionSubmittedContent from "./TransactionSubmittedContent";
@@ -21,7 +21,7 @@ const TransactionConfirmationModal = ({
   pendingText,
   content,
 }: ConfirmationModalProps) => {
-  const { chainId } = useActiveWeb3React();
+  const { chainId } = useWeb3React();
 
   if (!chainId) return null;
 

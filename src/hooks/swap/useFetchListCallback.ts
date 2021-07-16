@@ -8,12 +8,12 @@ import { AppDispatch } from "../../state";
 import { fetchTokenList } from "../../state/swap/lists/actions";
 import getTokenList from "../../utils/swap/getTokenList";
 import resolveENSContentHash from "../../utils/swap/resolveENSContentHash";
-import { useActiveWeb3React } from "./index";
+import { useWeb3React } from "@web3-react/core";
 
 export function useFetchListCallback(): (
   listUrl: string
 ) => Promise<TokenList> {
-  const { chainId, library } = useActiveWeb3React();
+  const { chainId, library } = useWeb3React();
   const dispatch = useDispatch<AppDispatch>();
 
   const ensResolver = useCallback(

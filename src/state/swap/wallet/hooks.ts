@@ -6,10 +6,10 @@ import {
   Token,
   TokenAmount,
 } from "@pancakeswap-libs/sdk";
+import { useWeb3React } from "@web3-react/core";
 import { useMemo } from "react";
 import ERC20_INTERFACE from "../../../config/constants/swap/abis/erc20";
 import { useAllTokens } from "../../../hooks/swap/Tokens";
-import { useActiveWeb3React } from "../../../hooks/swap";
 import { useMulticallContract } from "../../../hooks/swap/useContract";
 import { isAddress } from "../../../utils/swap";
 import {
@@ -169,7 +169,7 @@ export function useCurrencyBalance(
 export function useAllTokenBalances(): {
   [tokenAddress: string]: TokenAmount | undefined;
 } {
-  const { account } = useActiveWeb3React();
+  const { account } = useWeb3React();
   const allTokens = useAllTokens();
   const allTokensArray = useMemo(
     () => Object.values(allTokens ?? {}),

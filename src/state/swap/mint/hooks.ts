@@ -8,12 +8,11 @@ import {
   Price,
   TokenAmount,
 } from "@pancakeswap-libs/sdk";
+import { useWeb3React } from "@web3-react/core";
 import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PairState, usePair } from "../../../config/data/Reserves";
 import { useTotalSupply } from "../../../config/data/TotalSupply";
-
-import { useActiveWeb3React } from "../../../hooks/swap";
 import { TranslateString } from "../../../utils/swap/translateTextHelpers";
 import {
   wrappedCurrency,
@@ -46,7 +45,7 @@ export function useDerivedMintInfo(
   poolTokenPercentage?: Percent;
   error?: string;
 } {
-  const { account, chainId } = useActiveWeb3React();
+  const { account, chainId } = useWeb3React();
 
   const { independentField, typedValue, otherTypedValue } = useMintState();
 
