@@ -24,7 +24,7 @@ import { DarkModeButton } from "newComponents/DarkModeButton";
 import PriceImageToken from "./PriceImageToken";
 import { useLocation } from "react-router-dom";
 
-const Links = ["Docs", "Farm", "Dashboard"];
+const Links = ["Docs", "Farm", "Dashboard", "Swap"];
 
 const NavLink = ({ href, children }) => {
   const location = useLocation();
