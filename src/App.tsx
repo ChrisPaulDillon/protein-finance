@@ -9,13 +9,13 @@ import {
 } from "state/hooks";
 import SuspenseWithChunkError from "./components/SuspenseWithChunkError";
 import PageLoader from "./components/PageLoader";
-import EasterEgg from "./components/EasterEgg";
 import Pools from "./views/Pools";
 import history from "./routerHistory";
 import NavBar from "newComponents/navBar";
 import Footer from "newComponents/Footer";
 import useFireToast from "./newHooks/useFireToast";
 import { Box, Button, Container } from "@chakra-ui/react";
+import Swap from "./views/Swap/index";
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -65,11 +65,13 @@ const App: React.FC = () => {
               <Route path="/docs">
                 <Pools />
               </Route>
+              <Route path="/swap">
+                <Swap />
+              </Route>
               {/* 404 */}
               <Route component={NotFound} />
             </Switch>
           </SuspenseWithChunkError>
-          <EasterEgg iterations={2} />
         </Container>
         <Footer />
       </Router>
