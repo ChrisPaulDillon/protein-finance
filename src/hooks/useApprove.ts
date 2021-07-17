@@ -11,7 +11,6 @@ import {
   useMasterchef,
   useCake,
   useSousChef,
-  useLottery,
   useCakeVaultContract,
 } from "./useContract";
 import useLastUpdated from "./useLastUpdated";
@@ -151,24 +150,6 @@ export const useCheckVaultApprovalStatus = () => {
   }, [account, cakeContract, cakeVaultContract, lastUpdated]);
 
   return { isVaultApproved, setLastUpdated };
-};
-
-// Approve the lottery
-export const useLotteryApprove = () => {
-  const { account } = useWeb3React();
-  const cakeContract = useCake();
-  const lotteryContract = useLottery();
-
-  const handleApprove = useCallback(async () => {
-    try {
-      const tx = await approve(cakeContract, lotteryContract, account);
-      return tx;
-    } catch (e) {
-      return false;
-    }
-  }, [account, cakeContract, lotteryContract]);
-
-  return { onApprove: handleApprove };
 };
 
 // Approve an IFO
