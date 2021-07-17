@@ -16,6 +16,7 @@ import Footer from "newComponents/Footer";
 import useFireToast from "./newHooks/useFireToast";
 import { Box, Button, Container } from "@chakra-ui/react";
 import Swap from "./views/Swap/index";
+import Farms from "./views/Farms/Farms";
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -60,6 +61,9 @@ const App: React.FC = () => {
                 <Dashboard />
               </Route>
               <Route path="/farm">
+                <Farms />
+              </Route>
+              <Route path="/pools">
                 <Pools />
               </Route>
               <Route path="/docs">

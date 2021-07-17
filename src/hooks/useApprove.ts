@@ -151,19 +151,3 @@ export const useCheckVaultApprovalStatus = () => {
 
   return { isVaultApproved, setLastUpdated };
 };
-
-// Approve an IFO
-export const useIfoApprove = (
-  tokenContract: Contract,
-  spenderAddress: string
-) => {
-  const { account } = useWeb3React();
-  const onApprove = useCallback(async () => {
-    const tx = await tokenContract.methods
-      .approve(spenderAddress, ethers.constants.MaxUint256)
-      .send({ from: account });
-    return tx;
-  }, [account, spenderAddress, tokenContract]);
-
-  return onApprove;
-};
