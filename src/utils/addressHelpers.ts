@@ -28,12 +28,6 @@ export const getMulticallAddress = () => {
 export const getWbnbAddress = () => {
   return getAddress(tokens.wbnb.address);
 };
-export const getPancakeProfileAddress = () => {
-  return getAddress(addresses.pancakeProfile);
-};
-export const getPancakeRabbitsAddress = () => {
-  return getAddress(addresses.pancakeRabbits);
-};
 export const getBunnyFactoryAddress = () => {
   return getAddress(addresses.bunnyFactory);
 };

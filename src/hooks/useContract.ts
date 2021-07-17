@@ -5,8 +5,6 @@ import {
   getCakeContract,
   getBunnyFactoryContract,
   getBunnySpecialContract,
-  getPancakeRabbitContract,
-  getProfileContract,
   getIfoV1Contract,
   getIfoV2Contract,
   getMasterchefContract,
@@ -54,16 +52,6 @@ export const useCake = () => {
 export const useBunnyFactory = () => {
   const web3 = useWeb3();
   return useMemo(() => getBunnyFactoryContract(web3), [web3]);
-};
-
-export const usePancakeRabbits = () => {
-  const web3 = useWeb3();
-  return useMemo(() => getPancakeRabbitContract(web3), [web3]);
-};
-
-export const useProfile = () => {
-  const web3 = useWeb3();
-  return useMemo(() => getProfileContract(web3), [web3]);
 };
 
 export const useMasterchef = () => {

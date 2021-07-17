@@ -7,8 +7,6 @@ import { PoolCategory } from "config/constants/types";
 // Addresses
 import {
   getAddress,
-  getPancakeProfileAddress,
-  getPancakeRabbitsAddress,
   getBunnyFactoryAddress,
   getBunnySpecialAddress,
   getCakeAddress,
@@ -30,19 +28,13 @@ import lpTokenAbi from "config/abi/lpToken.json";
 import cakeAbi from "config/abi/cake.json";
 import ifoV1Abi from "config/abi/ifoV1.json";
 import ifoV2Abi from "config/abi/ifoV2.json";
-import pointCenterIfo from "config/abi/pointCenterIfo.json";
-import lotteryAbi from "config/abi/lottery.json";
-import lotteryTicketAbi from "config/abi/lotteryNft.json";
-import lotteryV2Abi from "config/abi/lotteryV2.json";
 import masterChef from "config/abi/masterchef.json";
 import sousChef from "config/abi/sousChef.json";
 import sousChefV2 from "config/abi/sousChefV2.json";
 import sousChefBnb from "config/abi/sousChefBnb.json";
 import claimRefundAbi from "config/abi/claimRefund.json";
 import tradingCompetitionAbi from "config/abi/tradingCompetition.json";
-import easterNftAbi from "config/abi/easterNft.json";
 import cakeVaultAbi from "config/abi/cakeVault.json";
-import predictionsAbi from "config/abi/predictions.json";
 import chainlinkOracleAbi from "config/abi/chainlinkOracle.json";
 import { DEFAULT_GAS_PRICE } from "config";
 import { getSettings, getGasPriceInWei } from "./settings";
@@ -88,12 +80,6 @@ export const getSouschefV2Contract = (id: number, web3?: Web3) => {
 };
 export const getCakeContract = (web3?: Web3) => {
   return getContract(cakeAbi, getCakeAddress(), web3);
-};
-export const getProfileContract = (web3?: Web3) => {
-  return getContract(profileABI, getPancakeProfileAddress(), web3);
-};
-export const getPancakeRabbitContract = (web3?: Web3) => {
-  return getContract(pancakeRabbitsAbi, getPancakeRabbitsAddress(), web3);
 };
 export const getBunnyFactoryContract = (web3?: Web3) => {
   return getContract(bunnyFactoryAbi, getBunnyFactoryAddress(), web3);
