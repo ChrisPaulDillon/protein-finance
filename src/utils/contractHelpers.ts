@@ -18,16 +18,12 @@ import {
 } from "utils/addressHelpers";
 
 // ABI
-import profileABI from "config/abi/pancakeProfile.json";
-import pancakeRabbitsAbi from "config/abi/pancakeRabbits.json";
 import bunnyFactoryAbi from "config/abi/bunnyFactory.json";
 import bunnySpecialAbi from "config/abi/bunnySpecial.json";
 import bep20Abi from "config/abi/erc20.json";
 import erc721Abi from "config/abi/erc721.json";
 import lpTokenAbi from "config/abi/lpToken.json";
 import cakeAbi from "config/abi/cake.json";
-import ifoV1Abi from "config/abi/ifoV1.json";
-import ifoV2Abi from "config/abi/ifoV2.json";
 import masterChef from "config/abi/masterchef.json";
 import sousChef from "config/abi/sousChef.json";
 import sousChefV2 from "config/abi/sousChefV2.json";
@@ -61,12 +57,6 @@ export const getErc721Contract = (address: string, web3?: Web3) => {
 };
 export const getLpContract = (address: string, web3?: Web3) => {
   return getContract(lpTokenAbi, address, web3);
-};
-export const getIfoV1Contract = (address: string, web3?: Web3) => {
-  return getContract(ifoV1Abi, address, web3);
-};
-export const getIfoV2Contract = (address: string, web3?: Web3) => {
-  return getContract(ifoV2Abi, address, web3);
 };
 export const getSouschefContract = (id: number, web3?: Web3) => {
   const config = poolsConfig.find((pool) => pool.sousId === id);

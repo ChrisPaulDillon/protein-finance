@@ -7,7 +7,6 @@ import { getLibrary } from "utils/web3React";
 import { ThemeContextProvider } from "contexts/ThemeContext";
 import { LanguageProvider } from "contexts/Localization";
 import { RefreshContextProvider } from "contexts/RefreshContext";
-import { ToastsProvider } from "contexts/ToastsContext";
 import store from "state";
 import { ChakraProvider } from "@chakra-ui/react";
 
@@ -15,19 +14,17 @@ const Providers: React.FC = ({ children }) => {
   return (
     <Web3ReactProvider getLibrary={getLibrary}>
       <Provider store={store}>
-        <ToastsProvider>
-          <HelmetProvider>
-            <ThemeContextProvider>
-              <LanguageProvider>
-                <RefreshContextProvider>
-                  <ChakraProvider>
-                    <ModalProvider>{children}</ModalProvider>
-                  </ChakraProvider>
-                </RefreshContextProvider>
-              </LanguageProvider>
-            </ThemeContextProvider>
-          </HelmetProvider>
-        </ToastsProvider>
+        <HelmetProvider>
+          <ThemeContextProvider>
+            <LanguageProvider>
+              <RefreshContextProvider>
+                <ChakraProvider>
+                  <ModalProvider>{children}</ModalProvider>
+                </ChakraProvider>
+              </RefreshContextProvider>
+            </LanguageProvider>
+          </ThemeContextProvider>
+        </HelmetProvider>
       </Provider>
     </Web3ReactProvider>
   );
