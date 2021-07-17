@@ -17,6 +17,10 @@ import useFireToast from "./newHooks/useFireToast";
 import { Box, Button, Container } from "@chakra-ui/react";
 import Swap from "./views/Swap/index";
 import Farms from "./views/Farms/Farms";
+import { Heading, Skeleton, Text } from "@pancakeswap/uikit";
+import styled from "styled-components";
+import { useGetStats } from "hooks/api";
+import { useTranslation } from "contexts/Localization";
 
 // Route-based code splitting
 // Only pool is included in the main bundle because of it's the most visited page
@@ -29,13 +33,40 @@ BigNumber.config({
   DECIMAL_PLACES: 80,
 });
 
+const Hero = styled.div`
+  align-items: center;
+  background-image: url("/images/pan-bg-mobile.svg");
+  background-repeat: no-repeat;
+  background-position: top center;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin: auto;
+  margin-bottom: 32px;
+  padding-top: 116px;
+  text-align: center;
+
+  ${({ theme }) => theme.mediaQueries.lg} {
+    background-image: url("/images/pan-bg2.svg"), url("/images/pan-bg.svg");
+    background-position: left center, right center;
+    height: 165px;
+    padding-top: 0;
+  }
+`;
+
 const App: React.FC = () => {
+  const { t } = useTranslation();
   usePollBlockNumber();
   useEagerConnect();
   usePollCoreFarmData();
   useFeatureFlag();
 
   const { toastSuccess, toastError, toastWarning } = useFireToast();
+
+  const data = useGetStats();
+  const tvl = data
+    ? data.tvl.toLocaleString("en-US", { maximumFractionDigits: 0 })
+    : null;
 
   return (
     <Box
@@ -52,6 +83,19 @@ const App: React.FC = () => {
               toastWarning("Warning", "Successfully deposited to vault");
             }}
           ></Button>
+          <Hero>
+            <Heading as="h1" scale="xxl" mb="24px" color="secondary">
+              {t("Protein Finance")}
+            </Heading>
+            {data ? (
+              <>
+                <Heading scale="xl">{`$${tvl}`}</Heading>
+                <Text color="textSubtle">{t("Total Value Locked")}</Text>
+              </>
+            ) : (
+              <Skeleton height={66} />
+            )}
+          </Hero>
           <SuspenseWithChunkError fallback={<PageLoader />}>
             <Switch>
               <Route path="/" exact>
